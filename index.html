@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RACE Employee Training</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+:root {
+  --or: #E8722A; --or-d: #C45E1E; --or-dim: rgba(232,114,42,0.15);
+  --bg: #0E0E0E; --bg2: #1A1A1A; --bg3: #252525; --bg4: #303030;
+  --txt: #FFFFFF; --txt2: #A0A0A0; --txt3: #555;
+  --grn: #2ECC71; --grn-dim: rgba(46,204,113,0.12);
+  --red: #E74C3C; --red-dim: rgba(231,76,60,0.12);
+  --brd: rgba(255,255,255,0.07); --r: 16px; --rs: 10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+
+/* LANG */
+#lang-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:28px;padding:32px}
+.l-logo{width:76px;height:76px;background:var(--or);border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:30px}
+.l-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;text-align:center}
+.l-sub{color:var(--txt2);font-size:13px;text-align:center;line-height:1.6}
+.l-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px}
+.l-btn{padding:18px;border-radius:var(--r);border:1.5px solid var(--brd);background:var(--bg2);color:var(--txt);font-size:16px;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s}
+.l-btn:active{border-color:var(--or);background:var(--or-dim)}
+.l-flag{font-size:26px}
+
+/* APP */
+#app{display:none;width:100%;max-width:430px;min-height:100vh;flex-direction:column}
+
+/* TOP BAR */
+#topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--brd);padding:10px 16px;display:flex;align-items:center;gap:10px}
+.prog-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--or);border-radius:3px;transition:width .5s ease}
+.prog-lbl{font-size:11px;color:var(--txt2);font-weight:600;white-space:nowrap}
+
+/* SCREENS */
+.screen{display:none;flex-direction:column;padding:20px 16px 110px;gap:18px;animation:fu .3s ease}
+.screen.on{display:flex}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* BOTTOM NAV */
+#bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg);border-top:1px solid var(--brd);padding:10px 16px 22px;display:flex;gap:10px;z-index:50}
+
+/* BUTTONS */
+.btn{padding:15px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all .2s;text-align:center}
+.btn-or{background:var(--or);color:#fff;flex:2}
+.btn-or:active{background:var(--or-d)}
+.btn-sec{background:var(--bg3);color:var(--txt);border:1.5px solid var(--brd);flex:1}
+.btn-sec:active{border-color:var(--or)}
+
+/* TITLES */
+.stitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800}
+.ssub{font-size:13px;color:var(--txt2);line-height:1.6;margin-top:-8px}
+
+/* INSTRUCTION BOX */
+.instr{background:var(--grn-dim);border:1px solid rgba(46,204,113,.25);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px}
+.instr-ico{font-size:24px;flex-shrink:0}
+.instr h4{font-size:14px;font-weight:600;color:var(--grn);margin-bottom:3px}
+.instr p{font-size:13px;color:var(--txt2);line-height:1.5}
+.tip{background:var(--or-dim);border:1px solid rgba(232,114,42,.25);border-radius:var(--r);padding:13px 15px;display:flex;gap:10px;font-size:13px;line-height:1.5}
+
+/* WELCOME */
+.hero{background:linear-gradient(135deg,var(--or-dim),var(--bg2));border:1px solid rgba(232,114,42,.2);border-radius:20px;padding:26px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.hero-ico{width:80px;height:80px;background:var(--or);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:38px}
+.hero h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+.hero p{font-size:13px;color:var(--txt2);line-height:1.6}
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-row{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--brd);border-radius:var(--rs);padding:14px}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.step-row h4{font-size:14px;font-weight:600}
+.step-row p{font-size:11px;color:var(--txt2);margin-top:2px}
+
+/* PHONE MOCKUP */
+.phone{width:100%;background:var(--bg2);border-radius:24px;border:2px solid var(--bg4);overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.ph-status{background:var(--or);padding:7px 18px;display:flex;justify-content:space-between;font-size:12px;font-weight:600}
+.ph-nav{background:#111;padding:9px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--brd)}
+.ph-nav-logo{width:28px;height:28px;background:var(--or);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.ph-nav-title{font-size:13px;font-weight:600}
+.ph-nav-icons{margin-left:auto;color:var(--txt2)}
+.ph-body{padding:14px}
+.ph-bnav{display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid var(--brd);background:#111}
+.pbn{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--txt2)}
+.pbn.on{color:var(--or)}
+.pbn svg{width:18px;height:18px}
+.pbn-plus{width:40px;height:40px;background:var(--or);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 14px rgba(232,114,42,.4)}
+
+/* STAT GRID */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sc{background:var(--bg3);border-radius:var(--rs);padding:12px}
+.sc .sl{font-size:10px;color:var(--txt2);margin-bottom:5px}
+.sc .sv{font-size:18px;font-weight:700;font-family:'Syne',sans-serif}
+.sc .st{font-size:10px;color:var(--grn);margin-top:3px}
+
+/* STEP PROGRESS */
+.stp{display:flex;align-items:center;margin-bottom:14px}
+.sd{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+.sdc{width:26px;height:26px;border-radius:50%;border:2px solid var(--brd);background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--txt2)}
+.sdc.done{background:var(--or);border-color:var(--or);color:#fff}
+.sdc.cur{border-color:var(--or);color:var(--or)}
+.sd span{font-size:9px;color:var(--txt2)}
+.sd.cur span{color:var(--or)}
+.sl2{flex:1;height:2px;background:var(--brd);margin-top:13px}
+.sl2.done{background:var(--or)}
+
+/* INPUTS */
+.lbl{font-size:11px;color:var(--txt2);margin-bottom:5px;font-weight:500}
+.inp{width:100%;padding:12px 14px;background:var(--bg3);border:1.5px solid var(--brd);border-radius:var(--rs);color:var(--txt);font-size:14px;font-family:'DM Sans',sans-serif}
+.inp:focus{outline:none;border-color:var(--or)}
+.inp-row{display:flex;gap:8px}
+.search-btn{width:46px;height:46px;background:var(--or);border:none;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0}
+.search-btn:active{background:var(--or-d)}
+
+/* RESULT CARDS */
+.res-found{background:var(--grn-dim);border:2px solid var(--grn);border-radius:var(--rs);padding:14px;margin-top:10px;text-align:center}
+.res-found .big-tick{font-size:48px;margin-bottom:6px}
+.res-found h3{font-size:18px;font-weight:800;color:var(--grn);margin-bottom:4px}
+.res-found p{font-size:12px;color:var(--txt2)}
+.res-found .plate-display{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--txt);background:var(--bg3);border-radius:8px;padding:8px 16px;display:inline-block;margin:10px 0;letter-spacing:2px}
+.res-notfound{background:var(--red-dim);border:2px solid var(--red);border-radius:var(--rs);padding:14px;margin-top:10px;text-align:center}
+.res-notfound .big-x{font-size:48px;margin-bottom:6px}
+.res-notfound h3{font-size:18px;font-weight:800;color:var(--red);margin-bottom:4px}
+.res-notfound p{font-size:12px;color:var(--txt2);line-height:1.5}
+.go-btn{width:100%;padding:14px;background:var(--grn);color:#fff;border:none;border-radius:var(--rs);font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:12px}
+.go-btn:active{background:#27ae60}
+
+/* FUEL CHIPS */
+.cat-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px}
+.cat-c{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:var(--bg3);border:1.5px solid var(--brd);border-radius:var(--rs);cursor:pointer;flex-shrink:0;min-width:58px;font-size:10px;color:var(--txt2);transition:all .2s}
+.cat-c.on{border-color:var(--or);background:var(--or-dim);color:var(--or)}
+.cat-c .cie{font-size:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chip{padding:8px 16px;border-radius:20px;background:var(--bg3);border:1.5px solid var(--brd);font-size:13px;cursor:pointer;transition:all .2s;font-weight:500}
+.chip.on{border-color:var(--or);background:var(--or-dim);color:var(--or);font-weight:700}
+.chip:active{opacity:.7}
+.add-btn{width:100%;padding:13px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:4px}
+.add-btn:active{background:var(--or-d)}
+.added-row{background:var(--bg3);border:1px solid var(--brd);border-radius:var(--rs);padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.added-row .al h4{font-size:14px;font-weight:600}
+.added-row .al p{font-size:11px;color:var(--txt2);margin-top:2px}
+.added-row .ar2{font-size:15px;font-weight:700}
+.total-row{background:var(--bg3);border-radius:var(--rs);padding:14px;display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.total-row span:last-child{color:var(--or);font-size:20px;font-weight:800;font-family:'Syne',sans-serif}
+
+/* SUMMARY */
+.sum-card{background:var(--bg3);border-radius:var(--rs);padding:14px;display:flex;flex-direction:column;gap:8px}
+.sum-row{display:flex;justify-content:space-between;align-items:center}
+.sum-lbl{font-size:12px;color:var(--txt2)}
+.sum-val{font-size:13px;font-weight:700}
+.divider{height:1px;background:var(--brd)}
+.hi-row{background:var(--bg2);border:1px solid rgba(232,114,42,.25);border-radius:var(--rs);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.hi-row span:first-child{font-size:12px;color:var(--txt2)}
+.hi-row span:last-child{font-size:15px;font-weight:800;color:var(--or)}
+
+/* SUCCESS */
+.succ-center{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 0}
+.succ-tick{width:70px;height:70px;border-radius:50%;background:var(--grn-dim);border:2px solid var(--grn);display:flex;align-items:center;justify-content:center;font-size:32px}
+.succ-center h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--grn)}
+.notif-pop{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:13px 15px;margin-bottom:10px}
+.notif-pop .nt{font-size:14px;font-weight:600;margin-bottom:2px}
+.notif-pop .nd{font-size:12px;color:var(--txt2)}
+.rcpt{background:var(--bg3);border-radius:var(--rs);padding:14px}
+.rcpt-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--brd)}
+.rcpt-row:last-child{border-bottom:none}
+.rcpt-row span:first-child{font-size:12px;color:var(--txt2)}
+.rcpt-row span:last-child{font-size:12px;font-weight:600}
+.rcpt-row.hi span:last-child{color:var(--or)}
+.share-row{display:flex;gap:8px;margin-top:8px}
+
+/* WALLET */
+.wal-card{background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:6px}
+.wal-lbl{font-size:12px;color:var(--or);display:flex;align-items:center;gap:6px}
+.wal-amt{font-family:'Syne',sans-serif;font-size:34px;font-weight:800}
+.wal-sub{font-size:11px;color:var(--txt2)}
+.wd-btn{padding:10px 18px;border-radius:var(--rs);font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none}
+.wd-locked{background:var(--bg4);color:var(--txt3)}
+.wd-open{background:var(--or);color:#fff}
+.thr-track{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:8px}
+.thr-fill{height:100%;background:var(--or);border-radius:3px;transition:width 1s ease}
+.thr-lbls{display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--txt2)}
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ref-c{background:var(--bg2);border-radius:8px;padding:10px}
+.ref-c .rl{font-size:10px;color:var(--txt2);margin-bottom:4px}
+.ref-c .rv{font-size:16px;font-weight:700}
+.sim-btn{width:100%;padding:14px;background:var(--bg3);border:1.5px solid var(--or);border-radius:var(--rs);color:var(--or);font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* QUIZ */
+.quiz-q{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.quiz-ctr{font-size:12px;color:var(--txt2);margin-bottom:10px}
+.qopt{padding:14px;background:var(--bg2);border:1.5px solid var(--brd);border-radius:var(--rs);cursor:pointer;font-size:13px;margin-bottom:8px;transition:all .2s}
+.qopt:active{opacity:.7}
+.qopt.correct{border-color:var(--grn);background:var(--grn-dim);color:var(--grn);font-weight:600}
+.qopt.wrong{border-color:var(--red);background:var(--red-dim);color:var(--red)}
+
+/* CERT */
+.cert{background:linear-gradient(135deg,#110e00,#001a08);border:2px solid var(--or);border-radius:20px;padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.cert-ico{width:80px;height:80px;background:var(--or);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:38px}
+.cert h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+.cert p{font-size:13px;color:var(--txt2);line-height:1.6}
+.cert-name{font-size:22px;font-weight:800;color:var(--or)}
+.cert-line{width:60%;height:1px;background:var(--brd)}
+.cert-meta{display:flex;gap:24px}
+.cert-m{display:flex;flex-direction:column;align-items:center;gap:2px}
+.cert-m span:first-child{font-size:10px;color:var(--txt2)}
+.cert-m span:last-child{font-size:14px;font-weight:700;color:var(--or)}
+
+/* QR SCREEN */
+.qr-hero{background:linear-gradient(135deg,var(--or-dim),var(--bg2));border:1px solid rgba(232,114,42,.2);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.qr-box{background:#fff;border-radius:14px;padding:16px;width:200px;height:200px;display:flex;align-items:center;justify-content:center}
+.qr-box svg{width:168px;height:168px}
+.qr-code-card{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:14px}
+.qr-ref-row{background:var(--bg3);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.qr-ref-code{font-family:monospace;font-size:13px;font-weight:700;color:var(--or);flex:1}
+.qr-copy-btn{padding:6px 12px;background:var(--or-dim);border:1px solid var(--or);border-radius:6px;color:var(--or);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.qr-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.qr-stat{background:var(--bg3);border-radius:var(--rs);padding:12px;text-align:center}
+.qr-stat .ql{font-size:10px;color:var(--txt2);margin-bottom:4px}
+.qr-stat .qv{font-size:22px;font-weight:800;font-family:'Syne',sans-serif}
+.share-btns{display:flex;gap:8px}
+.share-wa{flex:1;padding:13px;background:#25D366;color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+.share-tg{flex:1;padding:13px;background:#229ED9;color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* WITHDRAWAL MODAL */
+.wd-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.wd-modal{background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 20px 40px;width:100%;max-width:430px;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.wd-modal-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.wd-modal-sub{font-size:12px;color:var(--txt2);margin-bottom:18px}
+.wd-avail{color:var(--or);font-weight:700}
+.wd-amount-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.wd-preset{padding:8px 14px;background:var(--bg3);border:1.5px solid var(--brd);border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;color:var(--txt);font-family:'DM Sans',sans-serif}
+.wd-preset.on{border-color:var(--or);background:var(--or-dim);color:var(--or)}
+.wd-preset:active{opacity:.7}
+.wd-method-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.wd-method{padding:16px 10px;background:var(--bg3);border:2px solid var(--brd);border-radius:var(--rs);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600;transition:all .2s}
+.wd-method.on{border-color:var(--or);background:var(--or-dim)}
+.wd-method .mi{font-size:26px}
+.wd-bank-fields{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.wd-bottom-row{display:flex;gap:10px}
+.wd-cancel{flex:1;padding:15px;background:var(--bg3);border:none;border-radius:var(--rs);color:var(--txt2);font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.wd-submit{flex:2;padding:15px;background:var(--or);border:none;border-radius:var(--rs);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.wd-submit:active{background:var(--or-d)}
+.wd-success-modal{background:var(--bg2);border-radius:24px 24px 0 0;padding:32px 20px 48px;width:100%;max-width:430px;animation:slideUp .3s ease;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+
+/* VISUAL STEP (page 3) */
+.vis-steps{display:flex;flex-direction:column;gap:0}
+.vis-step{display:flex;gap:14px;align-items:flex-start;padding:0 0 20px 0;position:relative}
+.vis-step:not(:last-child)::after{content:'';position:absolute;left:23px;top:48px;width:2px;height:calc(100% - 20px);background:var(--brd)}
+.vs-circle{width:48px;height:48px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;z-index:1}
+.vs-body{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:var(--rs);padding:14px;margin-top:4px}
+.vs-body h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.vs-body p{font-size:12px;color:var(--txt2);line-height:1.5}
+.demo-plate{background:var(--bg3);border:2px solid var(--or);border-radius:8px;padding:8px 16px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:3px;display:inline-block;margin-top:8px}
+.demo-result-yes{background:var(--grn-dim);border:2px solid var(--grn);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-top:8px}
+.demo-result-yes .dri{font-size:28px}
+.demo-result-yes .drt{font-size:13px;font-weight:700;color:var(--grn)}
+.demo-result-yes .drs{font-size:11px;color:var(--txt2)}
+</style>
+</head>
+<body>
+
+<!-- LANG SCREEN -->
+<div id="lang-screen">
+  <div class="l-logo">R</div>
+  <div>
+    <div class="l-title">RACE Training</div>
+    <div class="l-sub" style="margin-top:6px">Choose language / زمان هەڵبژێرە / اختر لغتك</div>
+  </div>
+  <div class="l-btns">
+    <button class="l-btn" onclick="boot('en')"><span class="l-flag">🇬🇧</span> English</button>
+    <button class="l-btn" onclick="boot('ku')"><span class="l-flag">🏔️</span> کوردی سۆرانی</button>
+    <button class="l-btn" onclick="boot('ar')"><span class="l-flag">🇮🇶</span> العربية</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div id="topbar">
+    <div class="prog-track"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+    <div class="prog-lbl" id="pl">0 / 8</div>
+  </div>
+
+  <!-- S0: WELCOME -->
+  <div class="screen on" id="s0">
+    <div class="hero">
+      <div class="hero-ico">🏁</div>
+      <h1 id="wt">Welcome to RACE Training</h1>
+      <p id="ws">Complete this training to become a certified RACE agent. Simple steps, takes 10 minutes.</p>
+    </div>
+    <div class="step-list">
+      <div class="step-row"><div class="step-num">1</div><div><h4 id="st1">Login</h4><p id="sd1">How to open the app</p></div></div>
+      <div class="step-row"><div class="step-num">2</div><div><h4 id="st2">Your Dashboard</h4><p id="sd2">What you see every day</p></div></div>
+      <div class="step-row"><div class="step-num">3</div><div><h4 id="st3">How to Do a Transaction</h4><p id="sd3">Step by step with pictures</p></div></div>
+      <div class="step-row"><div class="step-num">4</div><div><h4 id="st4">Invite Customers via QR</h4><p id="sd4">How to register new drivers instantly</p></div></div>
+      <div class="step-row"><div class="step-num">5</div><div><h4 id="st5">Your Wallet & Withdrawals</h4><p id="sd5">How you earn and withdraw your money</p></div></div>
+      <div class="step-row"><div class="step-num">6</div><div><h4 id="st6">Final Quiz</h4><p id="sd6">5 questions to get certified</p></div></div>
+    </div>
+  </div>
+
+  <!-- S1: LOGIN -->
+  <div class="screen" id="s1">
+    <div class="stitle" id="s1t">Step 1 — Login</div>
+    <div class="instr"><div class="instr-ico">📱</div><div><h4 id="i1h">Open the app — enter your email and password</h4><p id="i1p">RACE will give you your email and password when you start. Type them in carefully. Tap "Remember me" so you only log in once.</p></div></div>
+    <div class="phone">
+      <div class="ph-status">3:28 <span>📶 LTE 🔋</span></div>
+      <div class="ph-body" style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:30px 18px">
+        <div style="width:56px;height:56px;background:var(--or);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-weight:800;font-size:22px">R</div>
+        <div style="text-align:center"><div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800">Race</div><div style="font-size:11px;color:var(--txt2);margin-top:3px" id="l-sub3">Multi-Business Rewards</div></div>
+        <div style="width:100%"><div class="lbl" id="ll-em">Email</div><input class="inp" value="yourname@race.krd" readonly></div>
+        <div style="width:100%"><div class="lbl" id="ll-pw">Password</div><div style="position:relative"><input class="inp" type="password" value="yourpassword" readonly style="padding-right:38px"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--txt2)">👁</span></div></div>
+        <div style="width:100%;display:flex;justify-content:space-between;font-size:12px;color:var(--txt2)"><span id="ll-rm">✅ Remember me</span><span style="color:var(--or)" id="ll-fp">Forgot password?</span></div>
+        <button style="width:100%;padding:14px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:15px;font-weight:700;font-family:DM Sans,sans-serif" id="ll-btn">Sign In</button>
+        <div style="font-size:11px;color:var(--txt3);text-align:center" id="ll-note">Contact your administrator for account access</div>
+      </div>
+    </div>
+    <div class="tip"><span>💡</span><span id="t1">Your email is: <strong>yourname@race.krd</strong>. If you forget your password contact support@race.iq</span></div>
+  </div>
+
+  <!-- S2: DASHBOARD -->
+  <div class="screen" id="s2">
+    <div class="stitle" id="s2t">Step 2 — Your Dashboard</div>
+    <div class="instr"><div class="instr-ico">📊</div><div><h4 id="i2h">This is your home screen — you see it every day</h4><p id="i2p">The 4 boxes show today's numbers. To serve a customer, tap the big orange button at the bottom.</p></div></div>
+    <div class="phone">
+      <div class="ph-status">3:28 <span>📶 LTE 🔋</span></div>
+      <div class="ph-nav"><div class="ph-nav-logo">R</div><div class="ph-nav-title">POS Agent</div><div class="ph-nav-icons">☀️ 🔔 👤</div></div>
+      <div class="ph-body">
+        <div style="font-family:Syne,sans-serif;font-size:17px;font-weight:800;margin-bottom:2px" id="db-wlc">Welcome back, Ahmed</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:12px" id="db-sub">Performance overview for today</div>
+        <div style="background:var(--bg3);border-radius:var(--rs);padding:9px 12px;display:flex;align-items:center;gap:8px;margin-bottom:12px"><span>📍</span><div><div style="font-size:12px;font-weight:600" id="db-stn">Your Station</div><div style="font-size:10px;color:var(--txt2)" id="db-br">Main Branch</div></div></div>
+        <div class="sg">
+          <div class="sc"><div class="sl" id="db-s1">Transactions</div><div class="sv">0</div><div class="st">Today</div></div>
+          <div class="sc"><div class="sl" id="db-s2">Revenue</div><div class="sv" style="font-size:14px">IQD 0</div><div class="st">Today</div></div>
+          <div class="sc"><div class="sl" id="db-s3">My Commission</div><div class="sv" style="font-size:14px">IQD 0</div><div class="st" style="color:var(--or)">0.2%</div></div>
+          <div class="sc"><div class="sl" id="db-s4">Customers</div><div class="sv">0</div><div class="st">Today</div></div>
+        </div>
+        <button style="width:100%;padding:13px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px"><span>+</span><span id="db-nb">New Transaction</span></button>
+      </div>
+      <div class="ph-bnav">
+        <div class="pbn on"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span id="bn-h">Home</span></div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16h12l4-4V8l-6-6z"/></svg><span id="bn-hi">History</span></div>
+        <div class="pbn-plus">+</div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg><span id="bn-st">Stats</span></div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg><span id="bn-wl">Wallet</span></div>
+      </div>
+    </div>
+    <div class="tip"><span>💡</span><span id="t2">Every fill you process earns you <strong>0.2%</strong>. Example: 20,000 IQD fill = <strong>40 IQD</strong> for you instantly.</span></div>
+  </div>
+
+  <!-- S3: HOW TO DO A TRANSACTION — VISUAL GUIDE (no scenarios, no complexity) -->
+  <div class="screen" id="s3">
+    <div class="stitle" id="s3t">Step 3 — How to Do a Transaction</div>
+    <p class="ssub" id="s3s">Follow these 4 steps every time a customer comes</p>
+
+    <div class="vis-steps">
+      <!-- STEP 1 -->
+      <div class="vis-step">
+        <div class="vs-circle">🚗</div>
+        <div class="vs-body">
+          <h4 id="v1h">Car arrives → Ask for plate number</h4>
+          <p id="v1p">The customer tells you their plate number. You type it in the app. Example:</p>
+          <div class="demo-plate">21 A 77079</div>
+          <p style="font-size:11px;color:var(--txt2);margin-top:6px" id="v1p2">Then tap the 🔍 orange search button</p>
+        </div>
+      </div>
+      <!-- STEP 2 -->
+      <div class="vis-step">
+        <div class="vs-circle">✅</div>
+        <div class="vs-body">
+          <h4 id="v2h">Green box appears = Customer found ✅</h4>
+          <p id="v2p">If you see green — the customer is in RACE. You can proceed.</p>
+          <div class="demo-result-yes">
+            <div class="dri">✅</div>
+            <div><div class="drt" id="v2g">Customer Found!</div><div class="drs" id="v2gs">Plate: 21 A 77079 — Ready to process</div></div>
+          </div>
+          <div style="background:var(--red-dim);border:1px solid var(--red);border-radius:8px;padding:10px;margin-top:8px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:22px">❌</span>
+            <div><div style="font-size:12px;font-weight:700;color:var(--red)" id="v2r">Red box = Not found</div><div style="font-size:11px;color:var(--txt2)" id="v2rs">Tell customer to register at race.iq first</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- STEP 3 -->
+      <div class="vis-step">
+        <div class="vs-circle">⛽</div>
+        <div class="vs-body">
+          <h4 id="v3h">Select fuel type → Enter amount</h4>
+          <p id="v3p">Tap the fuel type (Normal, Mohasn, Super, Gas). Tap the amount or type it. Tap <strong>Add Item</strong>.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <span style="background:var(--or);color:#fff;padding:5px 12px;border-radius:16px;font-size:12px;font-weight:700">Normal</span>
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 12px;border-radius:16px;font-size:12px">Mohasn</span>
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 12px;border-radius:16px;font-size:12px">Super</span>
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 12px;border-radius:16px;font-size:12px">Gas</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 10px;border-radius:16px;font-size:11px">10K</span>
+            <span style="background:var(--or);color:#fff;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:700">20K</span>
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 10px;border-radius:16px;font-size:11px">30K</span>
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 10px;border-radius:16px;font-size:11px">40K</span>
+            <span style="background:var(--bg3);color:var(--txt2);padding:5px 10px;border-radius:16px;font-size:11px">50K</span>
+          </div>
+        </div>
+      </div>
+      <!-- STEP 4 -->
+      <div class="vis-step">
+        <div class="vs-circle">🎉</div>
+        <div class="vs-body">
+          <h4 id="v4h">Confirm → Transaction done!</h4>
+          <p id="v4p">Check the plate and amount are correct. Tap <strong>Confirm Transaction</strong>. You will see a green success screen and your commission is added to your wallet automatically.</p>
+          <div style="background:var(--grn-dim);border:1.5px solid var(--grn);border-radius:8px;padding:10px;margin-top:8px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:26px">💰</span>
+            <div><div style="font-size:13px;font-weight:700;color:var(--grn)" id="v4c">Your commission is added instantly</div><div style="font-size:11px;color:var(--txt2)" id="v4cs">20,000 IQD fill → +40 IQD for you</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><span>💡</span><span id="t3">Now let's practice it for real. Tap Continue to try a real transaction yourself.</span></div>
+  </div>
+
+  <!-- S4: PRACTICE TRANSACTION -->
+  <div class="screen" id="s4">
+    <div class="stitle" id="s4t">Practice — Do a Real Transaction</div>
+    <p class="ssub" id="s4s">Follow the steps below just like a real customer came in</p>
+
+    <!-- STEP INDICATOR -->
+    <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:14px">
+      <div style="font-size:11px;color:var(--txt2);margin-bottom:10px;font-weight:600" id="tx-step-lbl">STEP 1 OF 4</div>
+      <div class="stp">
+        <div class="sd cur" id="sd-1"><div class="sdc cur" id="sc-1">👤</div><span id="ss-1">Customer</span></div>
+        <div class="sl2" id="ln-1"></div>
+        <div class="sd" id="sd-2"><div class="sdc" id="sc-2">⛽</div><span id="ss-2">Fuel</span></div>
+        <div class="sl2" id="ln-2"></div>
+        <div class="sd" id="sd-3"><div class="sdc" id="sc-3">✔</div><span id="ss-3">Confirm</span></div>
+        <div class="sl2" id="ln-3"></div>
+        <div class="sd" id="sd-4"><div class="sdc" id="sc-4">🧾</div><span id="ss-4">Done</span></div>
+      </div>
+
+      <!-- STEP 1: PLATE -->
+      <div id="tx-s1">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px" id="tx-s1-title">👤 Type the customer's plate number and tap 🔍</div>
+        <div class="inp-row">
+          <input class="inp" id="plate-inp" placeholder="e.g. 21a77079" style="font-family:monospace;font-size:16px;font-weight:700;letter-spacing:1px">
+          <button class="search-btn" onclick="searchPlate()">🔍</button>
+        </div>
+        <div id="plate-result" style="margin-top:0"></div>
+      </div>
+
+      <!-- STEP 2: FUEL (hidden initially) -->
+      <div id="tx-s2" style="display:none">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px" id="tx-s2-title">⛽ Select fuel type and amount</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:6px" id="tx-ft">Fuel Type</div>
+        <div class="chips" id="fuel-chips">
+          <div class="chip on" id="fc-Normal" onclick="pickFuel('Normal')">Normal</div>
+          <div class="chip" id="fc-Mohasn" onclick="pickFuel('Mohasn')">Mohasn</div>
+          <div class="chip" id="fc-Super" onclick="pickFuel('Super')">Super</div>
+          <div class="chip" id="fc-Gas" onclick="pickFuel('Gas')">Gas</div>
+        </div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:6px" id="tx-am">Amount (IQD)</div>
+        <div class="chips" id="price-chips">
+          <div class="chip" id="pc-10000" onclick="pickPrice(10000)">10K</div>
+          <div class="chip on" id="pc-20000" onclick="pickPrice(20000)">20K</div>
+          <div class="chip" id="pc-30000" onclick="pickPrice(30000)">30K</div>
+          <div class="chip" id="pc-40000" onclick="pickPrice(40000)">40K</div>
+          <div class="chip" id="pc-50000" onclick="pickPrice(50000)">50K</div>
+        </div>
+        <input class="inp" id="price-inp" value="20000" oninput="manualPrice(this.value)" style="margin-bottom:10px;font-weight:700;font-size:15px">
+        <button class="add-btn" onclick="addItem()" id="add-item-btn">+ Add Item</button>
+        <div id="item-added-area" style="margin-top:10px;display:none">
+          <div class="added-row">
+            <div class="al"><h4 id="added-name">Normal</h4><p id="added-sub">1 × IQD 20,000</p></div>
+            <div class="ar2" id="added-price">IQD 20,000</div>
+          </div>
+          <div class="total-row"><span id="tx-total-lbl">Total</span><span id="tx-total-val">IQD 20,000</span></div>
+          <button class="add-btn" style="margin-top:10px;background:var(--grn)" onclick="goToConfirm()" id="continue-btn">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: CONFIRM (hidden) -->
+      <div id="tx-s3" style="display:none">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px" id="tx-s3-title">✔ Check everything is correct — then confirm</div>
+        <div class="sum-card">
+          <div class="sum-row"><span class="sum-lbl" id="tx-pl">🚗 Plate</span><span class="sum-val" id="tx-plate-disp">21 A 77079</span></div>
+          <div class="divider"></div>
+          <div class="sum-row"><span class="sum-lbl" id="tx-it">Fuel</span><span class="sum-val" id="tx-item-disp">Normal</span></div>
+          <div class="sum-row"><span class="sum-lbl" id="tx-am2">Amount</span><span class="sum-val" id="tx-amt-disp">IQD 20,000</span></div>
+        </div>
+        <div class="hi-row"><span id="tx-ef">🛡 Emergency Fund (4%)</span><span id="tx-ef-val">+IQD 800</span></div>
+        <div class="hi-row"><span id="tx-cm">💰 Your Commission (0.2%)</span><span id="tx-cm-val">+IQD 40</span></div>
+        <button class="add-btn" style="margin-top:14px" onclick="confirmTx()" id="confirm-btn">✅ Confirm Transaction</button>
+        <button style="width:100%;padding:10px;background:transparent;border:1.5px solid var(--brd);border-radius:var(--rs);color:var(--txt2);font-size:13px;font-family:DM Sans,sans-serif;cursor:pointer;margin-top:8px" onclick="backToFuel()" id="back-btn">← Back</button>
+      </div>
+
+      <!-- STEP 4: SUCCESS (hidden) -->
+      <div id="tx-s4" style="display:none">
+        <div class="notif-pop" style="margin-bottom:12px">
+          <div class="nt">🚗 <span id="tx-done-t">Transaction Complete!</span></div>
+          <div class="nd" id="tx-done-d">Emergency fund: IQD 800 | Your commission: IQD 40</div>
+        </div>
+        <div class="succ-center">
+          <div class="succ-tick">✅</div>
+          <h2 id="tx-succ">Transaction Successful!</h2>
+          <p style="font-size:13px;color:var(--txt2)" id="tx-succ-s">The transaction is done</p>
+        </div>
+        <div class="rcpt">
+          <div style="text-align:center;margin-bottom:10px"><div style="font-size:10px;color:var(--or)">RACE</div><div style="font-size:12px;font-weight:600" id="tx-rcpt-t">Transaction Receipt</div></div>
+          <div class="rcpt-row"><span id="rx-dt">Date</span><span id="rx-dt-v">Jun 3, 2026 — 03:35 PM</span></div>
+          <div class="rcpt-row"><span id="rx-pm">Payment</span><span>Cash</span></div>
+          <div class="rcpt-row"><span id="rx-tot">Total</span><span id="rx-tot-v">IQD 20,000</span></div>
+          <div class="rcpt-row hi"><span id="rx-cm">Your Commission</span><span id="rx-cm-v">+IQD 40</span></div>
+        </div>
+        <div class="share-row">
+          <button class="btn btn-sec" style="flex:1;font-size:13px" id="rx-share">Share</button>
+          <button class="btn btn-sec" style="flex:1;font-size:13px" id="rx-print">Print</button>
+        </div>
+        <div style="margin-top:12px;background:var(--grn-dim);border:1.5px solid var(--grn);border-radius:var(--rs);padding:12px;text-align:center">
+          <div style="font-size:20px;margin-bottom:4px">🎉</div>
+          <div style="font-size:14px;font-weight:700;color:var(--grn)" id="tx-well">Well done! You processed your first transaction.</div>
+          <div style="font-size:12px;color:var(--txt2);margin-top:4px" id="tx-cont">Tap Continue to learn about your wallet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: QR INVITE -->
+  <div class="screen" id="s5">
+    <div class="stitle" id="s5t">Step 4 — Invite Customers via QR</div>
+    <div class="instr"><div class="instr-ico">📲</div><div><h4 id="i5h">A driver wants to join RACE? Show them your QR code</h4><p id="i5p">You do NOT need to send them anywhere. Just open this screen and let them scan your QR code with their phone camera. They register instantly. Every driver you register earns you referral income.</p></div></div>
+
+    <div class="phone">
+      <div class="ph-status">11:01 <span>📶 LTE 🔋</span></div>
+      <div class="ph-nav"><div class="ph-nav-logo">R</div><div class="ph-nav-title">POS Agent</div><div class="ph-nav-icons">☀️ 🔔 👤</div></div>
+      <div class="ph-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">👥</span><span style="font-size:15px;font-weight:700" id="qr-title">Invite Customers</span></div>
+          <span style="font-size:12px;color:var(--or)" id="qr-va">View All →</span>
+        </div>
+        <div class="qr-ref-row">
+          <div>
+            <div style="font-size:10px;color:var(--txt2);margin-bottom:3px" id="qr-rc">Your Referral Code</div>
+            <div class="qr-ref-code">RP_BM—OILMASIF…</div>
+          </div>
+          <button class="qr-copy-btn" onclick="copyCode()" id="qr-copy">Copy</button>
+          <span style="font-size:20px;margin-left:4px">⊞</span>
+        </div>
+        <div style="background:#fff;border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:12px">
+          <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <rect width="160" height="160" fill="white"/>
+            <!-- QR finder patterns -->
+            <rect x="10" y="10" width="50" height="50" fill="none" stroke="#000" stroke-width="5"/>
+            <rect x="20" y="20" width="30" height="30" fill="#000"/>
+            <rect x="100" y="10" width="50" height="50" fill="none" stroke="#000" stroke-width="5"/>
+            <rect x="110" y="20" width="30" height="30" fill="#000"/>
+            <rect x="10" y="100" width="50" height="50" fill="none" stroke="#000" stroke-width="5"/>
+            <rect x="20" y="110" width="30" height="30" fill="#000"/>
+            <!-- QR data pattern simulation -->
+            <rect x="70" y="10" width="8" height="8" fill="#000"/><rect x="82" y="10" width="8" height="8" fill="#000"/>
+            <rect x="70" y="22" width="8" height="8" fill="#000"/><rect x="82" y="22" width="8" height="8" fill="#000"/>
+            <rect x="70" y="34" width="8" height="8" fill="#000"/>
+            <rect x="10" y="70" width="8" height="8" fill="#000"/><rect x="22" y="70" width="8" height="8" fill="#000"/>
+            <rect x="34" y="70" width="8" height="8" fill="#000"/><rect x="46" y="70" width="8" height="8" fill="#000"/>
+            <rect x="10" y="82" width="8" height="8" fill="#000"/><rect x="34" y="82" width="8" height="8" fill="#000"/>
+            <rect x="70" y="70" width="8" height="8" fill="#000"/><rect x="82" y="70" width="8" height="8" fill="#000"/>
+            <rect x="94" y="70" width="8" height="8" fill="#000"/><rect x="106" y="70" width="8" height="8" fill="#000"/>
+            <rect x="118" y="70" width="8" height="8" fill="#000"/><rect x="130" y="70" width="8" height="8" fill="#000"/>
+            <rect x="142" y="70" width="8" height="8" fill="#000"/>
+            <rect x="70" y="82" width="8" height="8" fill="#000"/><rect x="94" y="82" width="8" height="8" fill="#000"/>
+            <rect x="118" y="82" width="8" height="8" fill="#000"/><rect x="142" y="82" width="8" height="8" fill="#000"/>
+            <rect x="70" y="94" width="8" height="8" fill="#000"/><rect x="82" y="94" width="8" height="8" fill="#000"/>
+            <rect x="106" y="94" width="8" height="8" fill="#000"/><rect x="130" y="94" width="8" height="8" fill="#000"/>
+            <rect x="70" y="106" width="8" height="8" fill="#000"/><rect x="94" y="106" width="8" height="8" fill="#000"/>
+            <rect x="118" y="106" width="8" height="8" fill="#000"/><rect x="130" y="106" width="8" height="8" fill="#000"/>
+            <rect x="70" y="118" width="8" height="8" fill="#000"/><rect x="82" y="118" width="8" height="8" fill="#000"/>
+            <rect x="94" y="118" width="8" height="8" fill="#000"/><rect x="106" y="118" width="8" height="8" fill="#000"/>
+            <rect x="130" y="118" width="8" height="8" fill="#000"/><rect x="142" y="118" width="8" height="8" fill="#000"/>
+            <rect x="70" y="130" width="8" height="8" fill="#000"/><rect x="94" y="130" width="8" height="8" fill="#000"/>
+            <rect x="106" y="130" width="8" height="8" fill="#000"/><rect x="142" y="130" width="8" height="8" fill="#000"/>
+            <rect x="70" y="142" width="8" height="8" fill="#000"/><rect x="82" y="142" width="8" height="8" fill="#000"/>
+            <rect x="118" y="142" width="8" height="8" fill="#000"/>
+          </svg>
+          <div style="font-size:11px;color:#888" id="qr-scan">Customers can scan this to register</div>
+        </div>
+        <div class="qr-stats">
+          <div class="qr-stat"><div class="ql" id="qr-refs">Referrals</div><div class="qv">5</div></div>
+          <div class="qr-stat"><div class="ql" id="qr-earned">Earned</div><div class="qv" style="font-size:14px">0 IQD</div></div>
+        </div>
+        <button style="width:100%;padding:13px;background:transparent;border:1.5px solid var(--brd);border-radius:var(--rs);color:var(--txt);font-size:13px;font-weight:600;font-family:DM Sans,sans-serif;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px" id="qr-share-btn">🔗 <span id="qr-share">Share Referral Code</span></button>
+        <div style="display:flex;justify-content:center;gap:24px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt2)">WhatsApp 🔗</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt2)">Telegram 🔗</div>
+        </div>
+      </div>
+      <div class="ph-bnav">
+        <div class="pbn on"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16h12l4-4V8l-6-6z"/></svg><span>History</span></div>
+        <div class="pbn-plus">+</div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg><span>Stats</span></div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg><span>Wallet</span></div>
+      </div>
+    </div>
+
+    <!-- HOW TO USE visual -->
+    <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:14px;font-weight:700" id="qr-how">How to use this screen</div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">1</div>
+        <div><div style="font-size:13px;font-weight:600" id="qr-h1">Driver says "I want to join RACE"</div><div style="font-size:12px;color:var(--txt2);margin-top:2px" id="qr-p1">Open this screen on your phone</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">2</div>
+        <div><div style="font-size:13px;font-weight:600" id="qr-h2">Show them the QR code</div><div style="font-size:12px;color:var(--txt2);margin-top:2px" id="qr-p2">Hold your phone toward them — they scan with their camera</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--grn);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">✓</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--grn)" id="qr-h3">They are registered instantly</div><div style="font-size:12px;color:var(--txt2);margin-top:2px" id="qr-p3">Their plate is now in RACE. Your referral count goes up. Done.</div></div>
+      </div>
+    </div>
+    <div class="tip"><span>💰</span><span id="t5">Every driver you register becomes your referral. Every time they fill fuel at any RACE station, you earn passive income permanently.</span></div>
+  </div>
+
+  <!-- S6: WALLET + WITHDRAWAL -->
+  <div class="screen" id="s6">
+    <div class="stitle" id="s6t">Step 5 — Your Wallet & Withdrawals</div>
+    <div class="instr"><div class="instr-ico">💰</div><div><h4 id="i6h">You earn money with every transaction</h4><p id="i6p">Every 100,000 IQD your customers fill = 200 IQD for you. When you reach 5,000 IQD the Withdraw button unlocks. Choose Cash Pickup or Bank Transfer.</p></div></div>
+    <div class="phone">
+      <div class="ph-status">3:36 <span>📶 LTE 🔋</span></div>
+      <div class="ph-nav"><div class="ph-nav-logo">R</div><div class="ph-nav-title">POS Agent</div><div class="ph-nav-icons">☀️ 🔔 👤</div></div>
+      <div class="ph-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+          <div><div style="font-family:Syne,sans-serif;font-size:17px;font-weight:800" id="w-title">Wallet</div><div style="font-size:11px;color:var(--txt2);margin-top:2px" id="w-sub">Your earnings</div></div>
+          <button class="wd-btn wd-locked" id="wd-btn" onclick="tryWd()">Withdraw</button>
+        </div>
+        <div class="wal-card" style="margin-bottom:12px">
+          <div class="wal-lbl">💼 <span id="w-tb">Total Balance</span></div>
+          <div class="wal-amt" id="w-amt">IQD 40</div>
+          <div class="wal-sub" id="w-sub2">Commission earnings</div>
+          <div class="thr-track"><div class="thr-fill" id="thr-fill" style="width:0.8%"></div></div>
+          <div class="thr-lbls"><span id="w-cur">IQD 40</span><span id="w-goal">Need IQD 5,000 to withdraw</span></div>
+        </div>
+        <div style="background:var(--bg3);border-radius:var(--rs);padding:13px">
+          <div style="font-size:12px;font-weight:600;margin-bottom:10px" id="w-ref">Referral Earnings</div>
+          <div class="ref-grid">
+            <div class="ref-c"><div class="rl" id="w-te">Total Earned</div><div class="rv">IQD 0</div></div>
+            <div class="ref-c"><div class="rl" id="w-vr">Verified</div><div class="rv">IQD 0</div></div>
+            <div class="ref-c"><div class="rl" id="w-pn">Pending</div><div class="rv">IQD 0</div></div>
+            <div class="ref-c"><div class="rl" id="w-rf">Referrals</div><div class="rv">0</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-bnav">
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span id="bn2-h">Home</span></div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16h12l4-4V8l-6-6z"/></svg><span id="bn2-hi">History</span></div>
+        <div class="pbn-plus">+</div>
+        <div class="pbn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg><span id="bn2-st">Stats</span></div>
+        <div class="pbn on"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg><span id="bn2-wl">Wallet</span></div>
+      </div>
+    </div>
+    <div class="tip"><span>🔒</span><span id="t6">Withdraw button is locked until you reach IQD 5,000. Tap the button below to simulate reaching it and see exactly how the withdrawal works.</span></div>
+    <button class="sim-btn" onclick="simEarnings()" id="sim-btn-el">🎬 Simulate reaching IQD 5,000 →</button>
+
+    <!-- WITHDRAWAL HOW-TO -->
+    <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:14px;font-weight:700" id="wd-how-title">When you tap Withdraw — what happens</div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:14px">1</div>
+        <div><div style="font-size:13px;font-weight:600" id="wd-h1">Enter the amount you want</div><div style="font-size:12px;color:var(--txt2);margin-top:2px" id="wd-p1">Use preset buttons (25K, 50K, 100K) or type any amount up to your balance</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:14px">2</div>
+        <div><div style="font-size:13px;font-weight:600" id="wd-h2">Choose Cash Pickup or Bank Transfer</div><div style="font-size:12px;color:var(--txt2);margin-top:2px" id="wd-p2">Cash Pickup: RACE agent brings cash to station. Bank Transfer: money goes directly to your account.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--grn);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:14px">✓</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--grn)" id="wd-h3">Tap Withdraw and done</div><div style="font-size:12px;color:var(--txt2);margin-top:2px" id="wd-p3">RACE processes your withdrawal within 24 hours</div></div>
+      </div>
+      <button style="width:100%;padding:14px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif" onclick="openWdModal()" id="try-wd-btn">👆 Try the Withdrawal Screen</button>
+    </div>
+  </div>
+
+  <!-- WITHDRAWAL MODAL (hidden, shown over any screen) -->
+  <div id="wd-modal-overlay" style="display:none" onclick="closeWdModalOutside(event)">
+    <div class="wd-modal" id="wd-modal-inner">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div class="wd-modal-title">💳 <span id="wm-title">Request Withdrawal</span></div>
+        <button onclick="closeWdModal()" style="background:none;border:none;color:var(--txt2);font-size:20px;cursor:pointer;padding:0 4px">×</button>
+      </div>
+      <div class="wd-modal-sub" id="wm-sub">Withdraw your verified balance. Available: <span class="wd-avail" id="wm-avail">IQD 6,544</span></div>
+
+      <div class="lbl" id="wm-amt-lbl">Amount (IQD)</div>
+      <input class="inp" id="wm-amt-inp" value="0" oninput="wdAmtInput(this.value)" style="margin-bottom:10px;font-size:18px;font-weight:700">
+      <div class="wd-amount-presets">
+        <div class="wd-preset" id="wp-25" onclick="wdPreset(25000)">IQD 25,000</div>
+        <div class="wd-preset" id="wp-50" onclick="wdPreset(50000)">IQD 50,000</div>
+        <div class="wd-preset" id="wp-100" onclick="wdPreset(100000)">IQD 100,000</div>
+        <div class="wd-preset" id="wp-max" onclick="wdPreset('max')">Max</div>
+      </div>
+
+      <div style="height:1px;background:var(--brd);margin:14px 0"></div>
+
+      <div class="lbl" id="wm-pm-lbl">Payment Method</div>
+      <div class="wd-method-row">
+        <div class="wd-method" id="wm-cash" onclick="wdMethod('cash')">
+          <div class="mi">💵</div>
+          <span id="wm-cash-lbl">Cash Pickup</span>
+        </div>
+        <div class="wd-method on" id="wm-bank" onclick="wdMethod('bank')">
+          <div class="mi">🏦</div>
+          <span id="wm-bank-lbl">Bank Transfer</span>
+        </div>
+      </div>
+
+      <div class="wd-bank-fields" id="wm-bank-fields">
+        <div>
+          <div class="lbl" id="wm-bn-lbl">Bank Name</div>
+          <input class="inp" id="wm-bn-inp" placeholder="Enter bank name">
+        </div>
+        <div>
+          <div class="lbl" id="wm-ac-lbl">Account Number</div>
+          <input class="inp" id="wm-ac-inp" placeholder="Enter account number">
+        </div>
+        <div>
+          <div class="lbl" id="wm-ah-lbl">Account Holder Name</div>
+          <input class="inp" id="wm-ah-inp" placeholder="Enter account holder name">
+        </div>
+      </div>
+
+      <div class="wd-bottom-row">
+        <button class="wd-cancel" onclick="closeWdModal()" id="wm-cancel">Cancel</button>
+        <button class="wd-submit" onclick="submitWd()" id="wm-submit">Withdraw</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WITHDRAWAL SUCCESS MODAL -->
+  <div id="wd-success-overlay" style="display:none">
+    <div class="wd-modal-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:201;display:flex;align-items:flex-end;justify-content:center">
+      <div class="wd-success-modal">
+        <div style="font-size:60px">🎉</div>
+        <div style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:var(--grn)" id="ws-title">Withdrawal Requested!</div>
+        <div style="font-size:13px;color:var(--txt2);line-height:1.6" id="ws-sub">RACE will process your withdrawal within 24 hours. You will receive a notification when it's done.</div>
+        <div style="background:var(--bg3);border-radius:var(--rs);padding:14px;width:100%;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;color:var(--txt2)" id="ws-amt-lbl">Amount</span>
+          <span style="font-size:18px;font-weight:800;color:var(--or)" id="ws-amt">IQD 0</span>
+        </div>
+        <div style="background:var(--bg3);border-radius:var(--rs);padding:14px;width:100%;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;color:var(--txt2)" id="ws-method-lbl">Method</span>
+          <span style="font-size:13px;font-weight:700" id="ws-method">Bank Transfer</span>
+        </div>
+        <button style="width:100%;padding:15px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:15px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:6px" onclick="closeWdSuccess()" id="ws-done">Done ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7: QUIZ -->
+  <div class="screen" id="s7">
+    <div class="stitle" id="s7t">Final Quiz</div>
+    <p class="ssub" id="s7s">5 questions. Need 4 correct to pass and get your certificate.</p>
+    <div id="quiz-box"></div>
+  </div>
+
+  <!-- S8: CERTIFICATE -->
+  <div class="screen" id="s8">
+    <div class="cert">
+      <div class="cert-ico">🏆</div>
+      <h2 id="ct">RACE Certified Agent</h2>
+      <div class="cert-line"></div>
+      <p id="cs">This certifies that</p>
+      <div class="cert-name" id="cn">Ahmed</div>
+      <p id="cd">has successfully completed the RACE POS Agent training and is authorized to process transactions on the RACE network.</p>
+      <div class="cert-line"></div>
+      <div class="cert-meta">
+        <div class="cert-m"><span id="csl">Score</span><span id="csv">5/5</span></div>
+        <div class="cert-m"><span id="cdl">Date</span><span id="cdv">Jun 2026</span></div>
+        <div class="cert-m"><span id="cil">Cert ID</span><span id="civ">R-0000</span></div>
+      </div>
+    </div>
+    <div class="instr" style="margin-top:4px"><div class="instr-ico">📲</div><div><h4 id="c-nh">You are ready to go live!</h4><p id="c-np">Screenshot this certificate and send it to your manager. Your account is now active. For support: support@race.iq</p></div></div>
+    <div class="tip"><span>📞</span><span id="c-sp">Support: <strong>support@race.iq</strong> — contact anytime for help.</span></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div id="bnav">
+    <button class="btn btn-sec" id="back-btn-nav" onclick="goBack()">← Back</button>
+    <button class="btn btn-or" id="next-btn-nav" onclick="goNext()">Start Training →</button>
+  </div>
+</div>
+
+<script>
+// ───── STATE ─────
+let cur = 0, lang = 'en', score = 0, qIdx = 0;
+let selFuel = 'Normal', selPrice = 20000, itemDone = false;
+let txPlate = '', simBal = 40, wdMethod_sel = 'bank', wdAmt = 0;
+const TOTAL = 8;
+
+// ───── TRANSLATIONS ─────
+const T = {
+  en: {
+    wt:'Welcome to RACE Training', ws:'Complete this training to become a certified RACE agent. Simple steps, takes 10 minutes.',
+    st1:'Login', sd1:'How to open the app', st2:'Your Dashboard', sd2:'What you see every day',
+    st3:'How to Do a Transaction', sd3:'Step by step with pictures',
+    st4:'Your Wallet', sd4:'How you earn and withdraw', st5:'Final Quiz', sd5:'5 questions to get certified',
+    s1t:'Step 1 — Login', i1h:'Open the app — enter your email and password',
+    i1p:'RACE will give you your email and password when you start. Type them in carefully. Tap "Remember me" so you only log in once.',
+    ll_em:'Email', ll_pw:'Password', ll_rm:'✅ Remember me', ll_fp:'Forgot password?', ll_btn:'Sign In',
+    ll_note:'Contact your administrator for account access',
+    t1:'Your email is: yourname@race.krd. If you forget your password contact support@race.iq',
+    s2t:'Step 2 — Your Dashboard', i2h:'This is your home screen — you see it every day',
+    i2p:"The 4 boxes show today's numbers. To serve a customer, tap the big orange button at the bottom.",
+    db_wlc:'Welcome back, Ahmed', db_sub:'Performance overview for today',
+    db_stn:'Your Station', db_br:'Main Branch',
+    db_s1:'Transactions', db_s2:'Revenue', db_s3:'My Commission', db_s4:'Customers', db_nb:'New Transaction',
+    bn_h:'Home', bn_hi:'History', bn_st:'Stats', bn_wl:'Wallet',
+    t2:'Every fill you process earns you 0.2%. Example: 20,000 IQD fill = 40 IQD for you instantly.',
+    s3t:'Step 3 — How to Do a Transaction', s3s:'Follow these 4 steps every time a customer comes',
+    v1h:'Car arrives → Ask for plate number', v1p:'The customer tells you their plate number. You type it in the app. Example:',
+    v1p2:'Then tap the 🔍 orange search button',
+    v2h:'Green box = Customer found ✅', v2p:'If you see green — the customer is in RACE. You can proceed.',
+    v2g:'Customer Found!', v2gs:'Plate: 21 A 77079 — Ready to process',
+    v2r:'Red box = Not found', v2rs:'Tell customer to register at race.iq first',
+    v3h:'Select fuel type → Enter amount', v3p:'Tap the fuel type. Tap the amount or type it. Tap Add Item.',
+    v4h:'Confirm → Transaction done!', v4p:'Check plate and amount are correct. Tap Confirm Transaction. Green success screen appears and your commission is added automatically.',
+    v4c:'Your commission is added instantly', v4cs:'20,000 IQD fill → +40 IQD for you',
+    t3:'Now let\'s practice it for real. Tap Continue to try a transaction yourself.',
+    s4t:'Practice — Do a Real Transaction', s4s:'Follow the steps below just like a real customer came in',
+    tx_step_lbl:'STEP 1 OF 4',
+    tx_s1_title:'👤 Type the customer\'s plate number and tap 🔍',
+    tx_s2_title:'⛽ Select fuel type and amount',
+    tx_ft:'Fuel Type', tx_am:'Amount (IQD)', add_item_btn:'+ Add Item',
+    tx_total_lbl:'Total', continue_btn:'Continue →',
+    tx_s3_title:'✔ Check everything is correct — then confirm',
+    tx_pl:'🚗 Plate', tx_it:'Fuel', tx_am2:'Amount',
+    tx_ef:'🛡 Emergency Fund (4%)', tx_cm:'💰 Your Commission (0.2%)',
+    confirm_btn:'✅ Confirm Transaction', back_btn:'← Back',
+    tx_done_t:'Transaction Complete!',
+    tx_succ:'Transaction Successful!', tx_succ_s:'The transaction is done',
+    tx_rcpt_t:'Transaction Receipt', rx_dt:'Date', rx_pm:'Payment', rx_tot:'Total', rx_cm:'Your Commission',
+    rx_share:'Share', rx_print:'Print',
+    tx_well:'Well done! You processed your first transaction.', tx_cont:'Tap Continue to learn about your wallet.',
+    s5t:'Step 4 — Your Wallet', i5h:'You earn money with every transaction',
+    i5p:'Every 100,000 IQD your customers fill = 200 IQD for you. When you reach 5,000 IQD you can withdraw to your bank account.',
+    w_title:'Wallet', w_sub:'Your earnings', w_tb:'Total Balance', w_sub2:'Commission earnings',
+    w_cur:'IQD 40', w_goal:'Need IQD 5,000 to withdraw',
+    w_ref:'Referral Earnings', w_te:'Total Earned', w_vr:'Verified', w_pn:'Pending', w_rf:'Referrals',
+    bn2_h:'Home', bn2_hi:'History', bn2_st:'Stats', bn2_wl:'Wallet',
+    t5:'Withdraw button is locked until you reach IQD 5,000. Tap the button below to see what happens when you reach it.',
+    sim_btn_el:'🎬 Simulate reaching IQD 5,000 →',
+    s6t:'Final Quiz', s6s:'5 questions. Need 4 correct to pass and get your certificate.',
+    ct:'RACE Certified Agent', cs:'This certifies that',
+    cd:'has successfully completed the RACE POS Agent training and is authorized to process transactions on the RACE network.',
+    c_nh:'You are ready to go live!', c_np:'Screenshot this certificate and send it to your manager. For support: support@race.iq',
+    c_sp:'Support: support@race.iq — contact anytime for help.',
+    csl:'Score', cdl:'Date', cil:'Cert ID',
+    wd_btn:'Withdraw', l_sub3:'Multi-Business Rewards'
+  },
+  ku: {
+    wt:'بەخێربێیت بۆ ڕاهێنانی RACE', ws:'ئەم ڕاهێنانەی تەواو بکە تا کارمەندی پشتڕاستکراوی RACE بیت. ١٠ خولەک دەخایەنێت.',
+    st1:'داخلبوون', sd1:'چۆن ئەپەکە بکەیتەوە', st2:'داشبۆردەکەت', sd2:'ئەوەی هەموو رۆژێک دەبینیت',
+    st3:'چۆن مامەڵە دەکەیت', sd3:'هەنگاو بە هەنگاو بە وێنە', st4:'جزدانەکەت', sd4:'چۆن دراوت دەبەزێنیت', st5:'تاقیکردنەوەی کۆتایی', sd5:'٥ پرسیار بۆ بروانامە',
+    s1t:'هەنگاوی ١ — داخلبوون', i1h:'ئەپەکە بکەیتەوە — ئیمەیڵ و وشەی نهێنی داخل بکە',
+    i1p:'RACE ئیمەیڵ و وشەی نهێنیت پێدەدات کاتێک دەستت پێدەکات. وردبکەوە داخلیان بکە. "بیریم بێت" دابگرە تا تەنها یەک جار داخل بیت.',
+    ll_em:'ئیمەیڵ', ll_pw:'وشەی نهێنی', ll_rm:'✅ بیریم بێت', ll_fp:'وشەی نهێنیت لەبیرچووە؟', ll_btn:'داخلبوون',
+    ll_note:'پەیوەندی بکە بە بەڕێوەبەرەکەت',
+    t1:'ئیمەیڵەکەت: ناوت@race.krd — ئەگەر لەبیرچوو پەیوەندی بکە: support@race.iq',
+    s2t:'هەنگاوی ٢ — داشبۆردەکەت', i2h:'ئەمە ماڵپەڕی سەرەکیتە — هەموو رۆژێک دەبینیت',
+    i2p:'٤ کارتەکە ژمارەی ئەمرۆ نیشان دەدات. بۆ خزمەتکردن بە کڕیار، دووگمەی پرتەقاڵیی گەورەی خوارەوە دابگرە.',
+    db_wlc:'بەخێربێیت، ئەحمەد', db_sub:'پێشبینیی ئاستی کارکردن بۆ ئەمرۆ',
+    db_stn:'وێستگاکەت', db_br:'لقی سەرەکی',
+    db_s1:'مامەڵەکان', db_s2:'داهات', db_s3:'کۆمیسیۆنم', db_s4:'کڕیارەکان', db_nb:'مامەڵەی نوێ',
+    bn_h:'ماڵ', bn_hi:'مێژوو', bn_st:'ئامار', bn_wl:'جزدان',
+    t2:'هەر پڕکردنێک ٠.٢٪ بۆت دروست دەکات. نموونە: ٢٠،٠٠٠ دینار = ٤٠ دینار بۆ تۆ.',
+    s3t:'هەنگاوی ٣ — چۆن مامەڵە دەکەیت', s3s:'ئەم ٤ هەنگاوانە هەموو جار دوابەدواکەوە بکە',
+    v1h:'سەیارە دێت ← ژمارەی پلاک بپرسە', v1p:'کڕیار ژمارەی پلاکی پێدەڵێت. تۆ لە ئەپەکە داخلیان دەکەیت. نموونە:',
+    v1p2:'پاشان دووگمەی گەڕانی 🔍 پرتەقاڵی دابگرە',
+    v2h:'باکسی سەوز = کڕیار دۆزراوەتەوە ✅', v2p:'ئەگەر سەوز بینیت — کڕیار لە RACE تۆمارکراوە. بەردەوام بە.',
+    v2g:'کڕیار دۆزراوەتەوە!', v2gs:'پلاک: ٢١ A ٧٧٠٧٩ — ئامادەی مامەڵەکردن',
+    v2r:'باکسی سوور = نەدۆزراوەتەوە', v2rs:'بڵێ بۆ کڕیار تۆمار بکات لە race.iq',
+    v3h:'جۆری سووتەمەنی هەڵبژێرە ← بڕ داخل بکە', v3p:'جۆری سووتەمەنی دابگرە. بڕ دابگرە یان بنووسە. دووگمەی "زیادکردنی کاڵا" دابگرە.',
+    v4h:'پشتڕاست بکەوە ← مامەڵەکە تەواو بوو!', v4p:'پلاک و بڕ بپشکنە. "پشتڕاستکردنەوەی مامەڵە" دابگرە. پەڕەی سەرکەوتوویی سەوز دەردەکەوێت و کۆمیسیۆنەکەت بە ئۆتۆماتیکی زیاد دەبێت.',
+    v4c:'کۆمیسیۆنەکەت فوری زیاد دەبێت', v4cs:'٢٠،٠٠٠ دینار پڕکردن → +٤٠ دینار بۆ تۆ',
+    t3:'ئێستا ڕاستەقینە تاقیی بکەوە. بەردەوامبوون دابگرە بۆ ئەوەی خۆت مامەڵەیەک بکەیت.',
+    s4t:'تاقیکردنەوە — مامەڵەیەکی ڕاستەقینە بکە', s4s:'هەنگاوەکان دوابەدواکەوە دوابەدوا بکە وەک کڕیارێک هات',
+    tx_step_lbl:'هەنگاوی ١ لە ٤',
+    tx_s1_title:'👤 ژمارەی پلاکی کڕیار داخل بکە و 🔍 دابگرە',
+    tx_s2_title:'⛽ جۆری سووتەمەنی و بڕ هەڵبژێرە',
+    tx_ft:'جۆری سووتەمەنی', tx_am:'بڕ (دینار)', add_item_btn:'+ زیادکردنی کاڵا',
+    tx_total_lbl:'کۆی گشتی', continue_btn:'بەردەوامبوون →',
+    tx_s3_title:'✔ هەموو شتێک بپشکنە — پاشان پشتڕاست بکەوە',
+    tx_pl:'🚗 پلاک', tx_it:'سووتەمەنی', tx_am2:'بڕ',
+    tx_ef:'🛡 فەندی فریاکەوتن (٤٪)', tx_cm:'💰 کۆمیسیۆنەکەت (٠.٢٪)',
+    confirm_btn:'✅ پشتڕاستکردنەوەی مامەڵە', back_btn:'← گەڕانەوە',
+    tx_done_t:'مامەڵەکە تەواو بوو!',
+    tx_succ:'مامەڵەکە سەرکەوتووانە!', tx_succ_s:'مامەڵەکە تەواو بوو',
+    tx_rcpt_t:'پسووڵەی مامەڵە', rx_dt:'ڕێکەوت', rx_pm:'پارەدان', rx_tot:'کۆی گشتی', rx_cm:'کۆمیسیۆنەکەت',
+    rx_share:'هاوبەشکردن', rx_print:'چاپکردن',
+    tx_well:'ئافەرین! یەکەم مامەڵەکەت کارکردیت.', tx_cont:'بەردەوامبوون دابگرە بۆ فێربوون دەربارەی جزدانەکەت.',
+    s5t:'هەنگاوی ٤ — جزدانەکەت', i5h:'بە هەر مامەڵەیەک دراو دەکەیت',
+    i5p:'هەر ١٠٠،٠٠٠ دینار کڕیارەکانت پڕ دەکەن = ٢٠٠ دینار بۆ تۆ. کاتێک گەیشتی بە ٥،٠٠٠ دینار دەتوانیت بەزێنیتەوە بۆ هەژمارەکەت لە بانکەکە.',
+    w_title:'جزدان', w_sub:'داهاتەکانت', w_tb:'کۆی باڵانس', w_sub2:'داهاتی کۆمیسیۆن',
+    w_cur:'٤٠ دینار', w_goal:'پێویستە ٥،٠٠٠ دینار بۆ دانەبەزاندن',
+    w_ref:'داهاتی ڕەفەرال', w_te:'کۆی وەرگیراو', w_vr:'پشتڕاستکراو', w_pn:'چاوەڕوانی', w_rf:'ڕەفەرالەکان',
+    bn2_h:'ماڵ', bn2_hi:'مێژوو', bn2_st:'ئامار', bn2_wl:'جزدان',
+    t5:'دووگمەی دانەبەزاندن قفڵکراوە تاوەکو بگەیتە ٥،٠٠٠ دینار.',
+    sim_btn_el:'🎬 شێوەکاری: گەیشتن بە ٥،٠٠٠ دینار →',
+    s6t:'تاقیکردنەوەی کۆتایی', s6s:'٥ پرسیار. پێویستە ٤ ڕاست بیت.',
+    ct:'کارمەندی پشتڕاستکراوی RACE', cs:'ئەمە پشتڕاست دەکات کە',
+    cd:'بە سەرکەوتوویی ڕاهێنانی کارمەندی RACE تەواو کردووە.',
+    c_nh:'ئامادەیت بچیت سەر کار!', c_np:'سکرینشۆتی بروانامەکە وەربگرە و بنێرە بۆ بەڕێوەبەرەکەت.',
+    c_sp:'پشتگیری: support@race.iq',
+    csl:'نمرە', cdl:'ڕێکەوت', cil:'ناسنامەی بروانامە',
+    wd_btn:'دانەبەزاندن', l_sub3:'پاداشتی پلورال'
+  },
+  ar: {
+    wt:'مرحباً بك في تدريب RACE', ws:'أكمل هذا التدريب لتصبح وكيل RACE معتمد. خطوات بسيطة، ١٠ دقائق.',
+    st1:'تسجيل الدخول', sd1:'كيف تفتح التطبيق', st2:'واجهتك الرئيسية', sd2:'ما تراه كل يوم',
+    st3:'كيف تُجري معاملة', sd3:'خطوة بخطوة بالصور', st4:'محفظتك', sd4:'كيف تكسب وتسحب', st5:'الاختبار النهائي', sd5:'٥ أسئلة للحصول على الشهادة',
+    s1t:'الخطوة ١ — تسجيل الدخول', i1h:'افتح التطبيق — أدخل البريد وكلمة المرور',
+    i1p:'سيمنحك RACE بريدك الإلكتروني وكلمة المرور عند البداية. أدخلهما بعناية. اضغط "تذكرني" حتى لا تسجل دخول كل مرة.',
+    ll_em:'البريد الإلكتروني', ll_pw:'كلمة المرور', ll_rm:'✅ تذكرني', ll_fp:'نسيت كلمة المرور؟', ll_btn:'تسجيل الدخول',
+    ll_note:'تواصل مع المسؤول للحصول على صلاحية الوصول',
+    t1:'بريدك الإلكتروني: اسمك@race.krd — إذا نسيت كلمة المرور تواصل مع support@race.iq',
+    s2t:'الخطوة ٢ — واجهتك الرئيسية', i2h:'هذه شاشتك الرئيسية — تراها كل يوم',
+    i2p:'البطاقات الـ٤ تُظهر أرقام اليوم. لخدمة عميل، اضغط الزر البرتقالي الكبير في الأسفل.',
+    db_wlc:'أهلاً بعودتك، أحمد', db_sub:'نظرة عامة على أدائك اليوم',
+    db_stn:'محطتك', db_br:'الفرع الرئيسي',
+    db_s1:'المعاملات', db_s2:'الإيرادات', db_s3:'عمولتي', db_s4:'العملاء', db_nb:'معاملة جديدة',
+    bn_h:'الرئيسية', bn_hi:'السجل', bn_st:'الإحصاء', bn_wl:'المحفظة',
+    t2:'كل تعبئة تعالجها تجلب لك ٠.٢٪. مثال: ٢٠،٠٠٠ دينار = ٤٠ دينار لك فوراً.',
+    s3t:'الخطوة ٣ — كيف تُجري معاملة', s3s:'اتبع هذه الـ٤ خطوات في كل مرة يأتي عميل',
+    v1h:'تصل سيارة ← اسأل عن رقم اللوحة', v1p:'العميل يعطيك رقم لوحته. أنت تكتبه في التطبيق. مثال:',
+    v1p2:'ثم اضغط زر البحث 🔍 البرتقالي',
+    v2h:'صندوق أخضر = العميل موجود ✅', v2p:'إذا رأيت أخضر — العميل مسجل في RACE. تابع.',
+    v2g:'تم العثور على العميل!', v2gs:'اللوحة: ٢١ A ٧٧٠٧٩ — جاهز للمعالجة',
+    v2r:'صندوق أحمر = غير موجود', v2rs:'أخبر العميل بالتسجيل على race.iq أولاً',
+    v3h:'اختر نوع الوقود ← أدخل المبلغ', v3p:'اضغط نوع الوقود. اضغط المبلغ أو اكتبه. اضغط "إضافة منتج".',
+    v4h:'تأكيد ← تمت المعاملة!', v4p:'تحقق من اللوحة والمبلغ. اضغط تأكيد المعاملة. تظهر شاشة نجاح خضراء وتُضاف عمولتك تلقائياً.',
+    v4c:'تُضاف عمولتك فوراً', v4cs:'٢٠،٠٠٠ دينار تعبئة → +٤٠ دينار لك',
+    t3:'الآن تدرب على معاملة حقيقية. اضغط متابعة.',
+    s4t:'تدرب — أجرِ معاملة حقيقية', s4s:'اتبع الخطوات أدناه كأن عميلاً حضر فعلاً',
+    tx_step_lbl:'الخطوة ١ من ٤',
+    tx_s1_title:'👤 اكتب رقم لوحة العميل واضغط 🔍',
+    tx_s2_title:'⛽ اختر نوع الوقود والمبلغ',
+    tx_ft:'نوع الوقود', tx_am:'المبلغ (دينار)', add_item_btn:'+ إضافة منتج',
+    tx_total_lbl:'الإجمالي', continue_btn:'متابعة →',
+    tx_s3_title:'✔ تحقق من كل شيء — ثم أكد',
+    tx_pl:'🚗 اللوحة', tx_it:'الوقود', tx_am2:'المبلغ',
+    tx_ef:'🛡 صندوق الطوارئ (٤٪)', tx_cm:'💰 عمولتك (٠.٢٪)',
+    confirm_btn:'✅ تأكيد المعاملة', back_btn:'← رجوع',
+    tx_done_t:'اكتملت المعاملة!',
+    tx_succ:'تمت المعاملة بنجاح!', tx_succ_s:'تمت المعاملة',
+    tx_rcpt_t:'إيصال المعاملة', rx_dt:'التاريخ', rx_pm:'الدفع', rx_tot:'الإجمالي', rx_cm:'عمولتك',
+    rx_share:'مشاركة', rx_print:'طباعة',
+    tx_well:'أحسنت! أجريت أول معاملة.', tx_cont:'اضغط متابعة للتعلم عن محفظتك.',
+    s5t:'الخطوة ٤ — محفظتك', i5h:'تكسب مالاً مع كل معاملة',
+    i5p:'كل ١٠٠،٠٠٠ دينار يعبئها عملاؤك = ٢٠٠ دينار لك. عندما تصل ٥،٠٠٠ دينار يمكنك السحب لحسابك البنكي.',
+    w_title:'المحفظة', w_sub:'أرباحك', w_tb:'الرصيد الكلي', w_sub2:'أرباح العمولة',
+    w_cur:'٤٠ دينار', w_goal:'تحتاج ٥،٠٠٠ دينار للسحب',
+    w_ref:'أرباح الإحالة', w_te:'إجمالي المكتسب', w_vr:'موثق', w_pn:'معلق', w_rf:'الإحالات',
+    bn2_h:'الرئيسية', bn2_hi:'السجل', bn2_st:'الإحصاء', bn2_wl:'المحفظة',
+    t5:'زر السحب مقفل حتى تصل ٥،٠٠٠ دينار.',
+    sim_btn_el:'🎬 محاكاة: الوصول لـ ٥،٠٠٠ دينار →',
+    s6t:'الاختبار النهائي', s6s:'٥ أسئلة. تحتاج ٤ صحيحة للنجاح.',
+    ct:'وكيل RACE معتمد', cs:'يشهد هذا بأن',
+    cd:'أتم بنجاح تدريب وكيل RACE وهو مخول لمعالجة المعاملات.',
+    c_nh:'أنت مستعد للعمل!', c_np:'التقط صورة للشهادة وأرسلها لمديرك.',
+    c_sp:'الدعم: support@race.iq',
+    csl:'النتيجة', cdl:'التاريخ', cil:'رقم الشهادة',
+    wd_btn:'سحب', l_sub3:'مكافآت متعددة الأعمال'
+  }
+};
+
+const QUIZ = {
+  en:[
+    {q:'A customer drives in. What is the FIRST thing you do?',opts:['Go to Wallet','Tap + New Transaction and type their plate number','Check History tab','Call RACE support'],a:1},
+    {q:'You search a plate and see a GREEN box. What does it mean?',opts:['There is an error','The customer is NOT in RACE','The customer IS in RACE — you can proceed','The app crashed'],a:2},
+    {q:'A customer fills 30,000 IQD of fuel. How much commission do YOU earn?',opts:['IQD 30','IQD 60','IQD 300','IQD 3,000'],a:1},
+    {q:'Your commission balance is IQD 3,200. Can you withdraw?',opts:['Yes, anytime','No — you need IQD 5,000 minimum','Yes, but only half','Only on Sundays'],a:1},
+    {q:'You search a plate and see a RED box. What do you do?',opts:['Process the transaction anyway','Tell the customer to register at race.iq first','Add the plate yourself','Ignore and serve next customer'],a:1}
+  ],
+  ku:[
+    {q:'کڕیارێک دێت. یەکەم کار چییە؟',opts:['بڕۆ بۆ جزدان','+ مامەڵەی نوێ دابگرە و ژمارەی پلاک داخل بکە','مێژوو بپشکنە','پەیوەندی بکە بە RACE'],a:1},
+    {q:'پلاکێک دەگەڕێیت و باکسی سەوز دەبینیت. مانایەکەی چییە؟',opts:['هەڵەیەک هەیە','کڕیار لە RACE نیە','کڕیار لە RACE تۆمارکراوە — بەردەوام بە','ئەپەکە هەڵکەوتووە'],a:2},
+    {q:'کڕیارێک ٣٠،٠٠٠ دینار سووتەمەنی پڕ دەکات. چەند کۆمیسیۆن وەردەگریت؟',opts:['٣٠ دینار','٦٠ دینار','٣٠٠ دینار','٣،٠٠٠ دینار'],a:1},
+    {q:'باڵانسی کۆمیسیۆنت ٣،٢٠٠ دینارە. دەتوانیت دانەبەزێنیت؟',opts:['بەڵێ، هەر کاتێک','نەخێر — پێویستە کەمەکە ٥،٠٠٠ دینار بێت','بەڵێ، بەڵام نیوەکەی تەنها','تەنها یەکشەممەکان'],a:1},
+    {q:'پلاکێک دەگەڕێیت و باکسی سوور دەبینیت. چ دەکەیت؟',opts:['مامەڵەکە هەمووجار بکە','بڵێ بۆ کڕیار تۆمار بکات لە race.iq','پلاکەکە خۆت زیاد بکە','پشتگوێ بخە'],a:1}
+  ],
+  ar:[
+    {q:'يصل عميل. ما هو أول شيء تفعله؟',opts:['الذهاب للمحفظة','اضغط + معاملة جديدة وأدخل رقم لوحته','تحقق من السجل','اتصل بدعم RACE'],a:1},
+    {q:'تبحث عن لوحة وترى صندوقاً أخضر. ماذا يعني؟',opts:['هناك خطأ','العميل ليس في RACE','العميل مسجل في RACE — تابع','التطبيق تعطل'],a:2},
+    {q:'يعبئ عميل ٣٠،٠٠٠ دينار وقوداً. كم عمولتك؟',opts:['٣٠ دينار','٦٠ دينار','٣٠٠ دينار','٣،٠٠٠ دينار'],a:1},
+    {q:'رصيد عمولتك ٣,٢٠٠ دينار. هل يمكنك السحب؟',opts:['نعم في أي وقت','لا — تحتاج ٥,٠٠٠ دينار كحد أدنى','نعم لكن نصفها','أيام الأحد فقط'],a:1},
+    {q:'تبحث عن لوحة وترى صندوقاً أحمر. ماذا تفعل؟',opts:['تابع المعاملة على أي حال','أخبر العميل بالتسجيل على race.iq','أضف اللوحة بنفسك','تجاهل وانتقل لعميل آخر'],a:1}
+  ]
+};
+
+// ───── BOOT ─────
+function boot(l) {
+  lang = l;
+  document.getElementById('lang-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  applyT();
+  updateNav();
+}
+
+function applyT() {
+  const t = T[lang];
+  // map id → key (replace - with _)
+  for (const [k,v] of Object.entries(t)) {
+    const id = k.replace(/_/g,'-').replace(/-([a-z0-9])/g,(_,c)=>'-'+c);
+    // try both underscore and hyphen forms
+    let el = document.getElementById(k) || document.getElementById(k.replace(/_/g,'-'));
+    if (el) el.textContent = v;
+  }
+  // RTL for Arabic
+  if (lang === 'ar') document.body.setAttribute('dir','rtl');
+}
+
+function t(k) { return (T[lang]||T.en)[k] || (T.en)[k] || k; }
+
+function updateNav() {
+  const nb = document.getElementById('next-btn-nav');
+  const bb = document.getElementById('back-btn-nav');
+  bb.style.display = cur === 0 ? 'none' : '';
+  nb.style.display = cur === TOTAL ? 'none' : '';
+  if (cur === 0) nb.textContent = lang==='ku'?'دەستپێبکە →':lang==='ar'?'ابدأ →':'Start Training →';
+  else if (cur === 4) nb.textContent = lang==='ku'?'بەردەوامبوون →':lang==='ar'?'متابعة →':'Continue →';
+  else nb.textContent = lang==='ku'?'بەردەوامبوون →':lang==='ar'?'متابعة →':'Continue →';
+  // progress
+  const pct = (cur / TOTAL) * 100;
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('pl').textContent = cur + ' / ' + TOTAL;
+  // hide nav on quiz and cert
+  document.getElementById('bnav').style.display = (cur === 7 || cur === 8) ? 'none' : 'flex';
+}
+
+function showS(n) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s'+n).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function goNext() {
+  if (cur === 4) {
+    // transaction practice must be complete
+    if (!itemDone) {
+      const msg = lang==='ku'?'پێشتر مامەڵەکە تەواو بکە':lang==='ar'?'أكمل المعاملة أولاً':'Please complete the transaction first';
+      alert(msg); return;
+    }
+  }
+  cur++; showS(cur); updateNav();
+  if (cur === 7) { qIdx=0; score=0; renderQ(); }
+}
+
+function goBack() {
+  if (cur > 0) { cur--; showS(cur); updateNav(); }
+}
+
+// ───── TRANSACTION PRACTICE ─────
+function searchPlate() {
+  const val = document.getElementById('plate-inp').value.trim();
+  const res = document.getElementById('plate-result');
+  if (!val) { res.innerHTML = `<div style="color:var(--txt2);font-size:13px;margin-top:8px;padding:10px;background:var(--bg3);border-radius:var(--rs)">${lang==='ku'?'ژمارەی پلاک داخل بکە':lang==='ar'?'أدخل رقم اللوحة':'Type a plate number first'}</div>`; return; }
+  txPlate = val.toUpperCase().replace(/([a-zA-Z])/,' $1 ').replace(/\s+/,' ').trim();
+  // show found
+  res.innerHTML = `<div class="res-found">
+    <div class="big-tick">✅</div>
+    <h3>${lang==='ku'?'کڕیار دۆزراوەتەوە!':lang==='ar'?'تم العثور على العميل!':'Customer Found!'}</h3>
+    <div class="plate-display">${txPlate}</div>
+    <p style="margin-bottom:10px">${lang==='ku'?'تۆمارکراوە لە RACE — بەردەوام بە':lang==='ar'?'مسجل في RACE — تابع':'Registered in RACE — ready to proceed'}</p>
+    <button class="go-btn" onclick="proceedToFuel()">${lang==='ku'?'بەردەوام بە ←':lang==='ar'?'تابع ←':'Proceed →'}</button>
+  </div>`;
+}
+
+function proceedToFuel() {
+  document.getElementById('tx-s1').style.display = 'none';
+  document.getElementById('tx-s2').style.display = 'block';
+  setStepIndicator(2);
+  document.getElementById('tx-step-lbl').textContent = lang==='ku'?'هەنگاوی ٢ لە ٤':lang==='ar'?'الخطوة ٢ من ٤':'STEP 2 OF 4';
+}
+
+function setStepIndicator(step) {
+  for (let i=1;i<=4;i++) {
+    const circle = document.getElementById('sc-'+i);
+    const dot = document.getElementById('sd-'+i);
+    if (!circle) continue;
+    circle.className = 'sdc' + (i < step ? ' done' : i === step ? ' cur' : '');
+    dot.className = 'sd' + (i === step ? ' cur' : '');
+    if (i < 4) { const ln = document.getElementById('ln-'+i); if(ln) ln.className = 'sl2' + (i < step ? ' done' : ''); }
+  }
+}
+
+function pickFuel(f) {
+  selFuel = f;
+  ['Normal','Mohasn','Super','Gas'].forEach(x=>{
+    const el = document.getElementById('fc-'+x);
+    if (el) el.className = 'chip' + (x===f?' on':'');
+  });
+}
+
+function pickPrice(p) {
+  selPrice = p;
+  [10000,20000,30000,40000,50000].forEach(x=>{
+    const el = document.getElementById('pc-'+x);
+    if (el) el.className = 'chip' + (x===p?' on':'');
+  });
+  document.getElementById('price-inp').value = p;
+}
+
+function manualPrice(v) {
+  selPrice = parseInt(v)||0;
+  [10000,20000,30000,40000,50000].forEach(x=>{
+    const el = document.getElementById('pc-'+x);
+    if (el) el.className = 'chip' + (x===selPrice?' on':'');
+  });
+}
+
+function addItem() {
+  const nameEl = document.getElementById('added-name');
+  const subEl = document.getElementById('added-sub');
+  const priceEl = document.getElementById('added-price');
+  const totalEl = document.getElementById('tx-total-val');
+  if (nameEl) nameEl.textContent = selFuel;
+  if (subEl) subEl.textContent = '1 × IQD ' + selPrice.toLocaleString();
+  if (priceEl) priceEl.textContent = 'IQD ' + selPrice.toLocaleString();
+  if (totalEl) totalEl.textContent = 'IQD ' + selPrice.toLocaleString();
+  const area = document.getElementById('item-added-area');
+  if (area) area.style.display = 'block';
+  const addBtn = document.getElementById('add-item-btn');
+  if (addBtn) { addBtn.style.background = '#555'; addBtn.textContent = lang==='ku'?'✅ زیادکراو':lang==='ar'?'✅ تمت الإضافة':'✅ Added'; addBtn.disabled = true; }
+}
+
+function goToConfirm() {
+  // update confirm values
+  const ef = Math.round(selPrice * 0.04);
+  const cm = Math.round(selPrice * 0.002);
+  const setTxt = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  setTxt('tx-plate-disp', txPlate);
+  setTxt('tx-item-disp', selFuel);
+  setTxt('tx-amt-disp', 'IQD ' + selPrice.toLocaleString());
+  setTxt('tx-ef-val', '+IQD ' + ef.toLocaleString());
+  setTxt('tx-cm-val', '+IQD ' + cm.toLocaleString());
+  document.getElementById('tx-s2').style.display = 'none';
+  document.getElementById('tx-s3').style.display = 'block';
+  setStepIndicator(3);
+  document.getElementById('tx-step-lbl').textContent = lang==='ku'?'هەنگاوی ٣ لە ٤':lang==='ar'?'الخطوة ٣ من ٤':'STEP 3 OF 4';
+}
+
+function backToFuel() {
+  document.getElementById('tx-s3').style.display = 'none';
+  document.getElementById('tx-s2').style.display = 'block';
+  setStepIndicator(2);
+  document.getElementById('tx-step-lbl').textContent = lang==='ku'?'هەنگاوی ٢ لە ٤':lang==='ar'?'الخطوة ٢ من ٤':'STEP 2 OF 4';
+}
+
+function confirmTx() {
+  const ef = Math.round(selPrice * 0.04);
+  const cm = Math.round(selPrice * 0.002);
+  const now = new Date();
+  const setTxt = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  setTxt('tx-done-d', `${lang==='ku'?'فەندی فریاکەوتن':lang==='ar'?'صندوق الطوارئ':'Emergency fund'}: IQD ${ef.toLocaleString()} | ${lang==='ku'?'کۆمیسیۆنەکەت':lang==='ar'?'عمولتك':'Your commission'}: IQD ${cm.toLocaleString()}`);
+  setTxt('rx-dt-v', now.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'}));
+  setTxt('rx-tot-v', 'IQD '+selPrice.toLocaleString());
+  setTxt('rx-cm-v', '+IQD '+cm.toLocaleString());
+  document.getElementById('tx-s3').style.display = 'none';
+  document.getElementById('tx-s4').style.display = 'block';
+  setStepIndicator(4);
+  document.getElementById('tx-step-lbl').textContent = lang==='ku'?'هەنگاوی ٤ لە ٤ — تەواو!':lang==='ar'?'الخطوة ٤ من ٤ — اكتمل!':'STEP 4 OF 4 — DONE!';
+  itemDone = true;
+  simBal += cm;
+}
+
+// ───── WALLET SIM ─────
+function simEarnings() {
+  simBal = 6544;
+  document.getElementById('w-amt').textContent = 'IQD 6,544';
+  document.getElementById('thr-fill').style.width = '100%';
+  document.getElementById('w-cur').textContent = 'IQD 6,544';
+  document.getElementById('w-goal').textContent = lang==='ku'?'✅ ئامادەی دانەبەزاندن!':lang==='ar'?'✅ جاهز للسحب!':'✅ Ready to withdraw!';
+  const btn = document.getElementById('wd-btn');
+  btn.className = 'wd-btn wd-open';
+  btn.textContent = lang==='ku'?'دانەبەزاندن':lang==='ar'?'سحب':'Withdraw';
+  const simBtnEl = document.getElementById('sim-btn-el');
+  if (simBtnEl) { simBtnEl.style.background='var(--grn-dim)';simBtnEl.style.borderColor='var(--grn)';simBtnEl.style.color='var(--grn)';simBtnEl.textContent=lang==='ku'?'✅ گەیشتیت — ئێستا دووگمەی دانەبەزاندن دابگرە':lang==='ar'?'✅ وصلت — الآن اضغط زر السحب':'✅ Reached! Now tap Withdraw button above'; }
+}
+
+function tryWd() {
+  if (simBal < 5000) {
+    alert(lang==='ku'?`باڵانسەکەت IQD ${simBal.toLocaleString()} ە. دووگمەی شێوەکاری دابگرە پێشتر.`:lang==='ar'?`رصيدك IQD ${simBal.toLocaleString()}. اضغط زر المحاكاة أولاً.`:`Your balance is IQD ${simBal.toLocaleString()}. Tap the simulate button first.`);
+  } else {
+    openWdModal();
+  }
+}
+
+// ───── QUIZ ─────
+function renderQ() {
+  const qs = QUIZ[lang] || QUIZ.en;
+  const box = document.getElementById('quiz-box');
+  if (qIdx >= qs.length) { showResult(); return; }
+  const q = qs[qIdx];
+  box.innerHTML = `
+    <div class="quiz-ctr">${lang==='ku'?'پرسیار':lang==='ar'?'سؤال':'Question'} ${qIdx+1} / ${qs.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    ${q.opts.map((o,i)=>`<div class="qopt" id="qo${i}" onclick="answerQ(${i},${q.a})">${o}</div>`).join('')}`;
+}
+
+function answerQ(i, correct) {
+  document.querySelectorAll('.qopt').forEach(o=>o.style.pointerEvents='none');
+  document.getElementById('qo'+i).className = 'qopt ' + (i===correct?'correct':'wrong');
+  if (i===correct) score++;
+  else document.getElementById('qo'+correct).className = 'qopt correct';
+  qIdx++;
+  setTimeout(renderQ, 1300);
+}
+
+function showResult() {
+  const pass = score >= 4;
+  const box = document.getElementById('quiz-box');
+  if (pass) {
+    box.innerHTML = `<div style="text-align:center;padding:20px 0;display:flex;flex-direction:column;align-items:center;gap:14px">
+      <div style="font-size:56px">🏆</div>
+      <div style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:var(--grn)">${lang==='ku'?'دەرچوویت!':lang==='ar'?'نجحت!':'You Passed!'}</div>
+      <div style="color:var(--txt2)">${score}/5 ${lang==='ku'?'وەڵامی ڕاست':lang==='ar'?'إجابة صحيحة':'correct'}</div>
+      <button style="padding:16px 32px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:16px;font-weight:700;font-family:DM Sans,sans-serif;cursor:pointer;margin-top:6px" onclick="showCert()">${lang==='ku'?'بروانامەکەت وەربگرە 🎉':lang==='ar'?'احصل على شهادتك 🎉':'Get Your Certificate 🎉'}</button>
+    </div>`;
+  } else {
+    box.innerHTML = `<div style="text-align:center;padding:20px 0;display:flex;flex-direction:column;align-items:center;gap:14px">
+      <div style="font-size:56px">😅</div>
+      <div style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:var(--or)">${lang==='ku'?'هەوڵی دیکە بدە':lang==='ar'?'حاول مجدداً':'Try Again'}</div>
+      <div style="color:var(--txt2)">${score}/5 — ${lang==='ku'?'پێویستە ٤ بگیریت':lang==='ar'?'تحتاج ٤ على الأقل':'Need at least 4'}</div>
+      <button style="padding:16px 32px;background:var(--or);color:#fff;border:none;border-radius:var(--rs);font-size:16px;font-weight:700;font-family:DM Sans,sans-serif;cursor:pointer" onclick="retryQuiz()">${lang==='ku'?'دووبارە هەوڵدان':lang==='ar'?'إعادة المحاولة':'Retry'}</button>
+    </div>`;
+  }
+}
+
+function retryQuiz() { qIdx=0; score=0; renderQ(); }
+
+// ───── QR FUNCTIONS ─────
+function copyCode() {
+  const msg = lang==='ku'?'کۆدەکە کۆپی کرا!':lang==='ar'?'تم نسخ الكود!':'Referral code copied!';
+  const btn = document.getElementById('qr-copy');
+  if (btn) { btn.textContent = '✓'; setTimeout(()=>{ btn.textContent = lang==='ku'?'کۆپی':lang==='ar'?'نسخ':'Copy'; }, 1500); }
+  alert(msg);
+}
+
+// ───── WITHDRAWAL MODAL ─────
+function openWdModal() {
+  document.getElementById('wd-modal-overlay').style.display = 'flex';
+  document.getElementById('wd-modal-overlay').style.position = 'fixed';
+  document.getElementById('wd-modal-overlay').style.inset = '0';
+  document.getElementById('wd-modal-overlay').style.background = 'rgba(0,0,0,.75)';
+  document.getElementById('wd-modal-overlay').style.zIndex = '200';
+  document.getElementById('wd-modal-overlay').style.alignItems = 'flex-end';
+  document.getElementById('wd-modal-overlay').style.justifyContent = 'center';
+  // update available
+  document.getElementById('wm-avail').textContent = 'IQD ' + simBal.toLocaleString();
+  document.getElementById('wm-amt-inp').value = '0';
+  wdAmt = 0;
+  // reset presets
+  ['wp-25','wp-50','wp-100','wp-max'].forEach(id=>{ const el=document.getElementById(id); if(el) el.className='wd-preset'; });
+}
+
+function closeWdModal() {
+  document.getElementById('wd-modal-overlay').style.display = 'none';
+}
+
+function closeWdModalOutside(e) {
+  if (e.target.id === 'wd-modal-overlay') closeWdModal();
+}
+
+function wdPreset(v) {
+  const max = simBal;
+  wdAmt = v === 'max' ? max : Math.min(v, max);
+  document.getElementById('wm-amt-inp').value = wdAmt;
+  ['wp-25','wp-50','wp-100','wp-max'].forEach(id=>{ const el=document.getElementById(id); if(el) el.className='wd-preset'; });
+  const key = v===25000?'wp-25':v===50000?'wp-50':v===100000?'wp-100':'wp-max';
+  const el = document.getElementById(key); if(el) el.className='wd-preset on';
+}
+
+function wdAmtInput(v) {
+  wdAmt = parseInt(v)||0;
+  ['wp-25','wp-50','wp-100','wp-max'].forEach(id=>{ const el=document.getElementById(id); if(el) el.className='wd-preset'; });
+}
+
+function wdMethod(m) {
+  wdMethod_sel = m;
+  document.getElementById('wm-cash').className = 'wd-method' + (m==='cash'?' on':'');
+  document.getElementById('wm-bank').className = 'wd-method' + (m==='bank'?' on':'');
+  document.getElementById('wm-bank-fields').style.display = m==='bank'?'flex':'none';
+}
+
+function submitWd() {
+  if (!wdAmt || wdAmt <= 0) {
+    alert(lang==='ku'?'بڕی دانەبەزاندن داخل بکە':lang==='ar'?'أدخل مبلغ السحب':'Enter a withdrawal amount');
+    return;
+  }
+  if (wdAmt > simBal) {
+    alert(lang==='ku'?'بڕ زیاترە لە باڵانسەکەت':lang==='ar'?'المبلغ أكبر من رصيدك':'Amount exceeds your balance');
+    return;
+  }
+  if (wdMethod_sel === 'bank') {
+    const bank = document.getElementById('wm-bn-inp').value.trim();
+    const acct = document.getElementById('wm-ac-inp').value.trim();
+    if (!bank || !acct) {
+      alert(lang==='ku'?'زانیاری بانکەکەت تەواو بکە':lang==='ar'?'أكمل بيانات البنك':'Please fill in bank details');
+      return;
+    }
+  }
+  closeWdModal();
+  // show success
+  document.getElementById('ws-amt').textContent = 'IQD ' + wdAmt.toLocaleString();
+  document.getElementById('ws-method').textContent = wdMethod_sel === 'bank'
+    ? (lang==='ku'?'گواستنەوەی بانکی':lang==='ar'?'تحويل بنكي':'Bank Transfer')
+    : (lang==='ku'?'وەرگرتنی نەقد':lang==='ar'?'استلام نقدي':'Cash Pickup');
+  document.getElementById('wd-success-overlay').style.display = 'block';
+  simBal -= wdAmt;
+}
+
+function closeWdSuccess() {
+  document.getElementById('wd-success-overlay').style.display = 'none';
+  // update wallet balance display
+  document.getElementById('w-amt').textContent = 'IQD ' + simBal.toLocaleString();
+  document.getElementById('thr-fill').style.width = Math.min((simBal/5000)*100, 100) + '%';
+  document.getElementById('w-cur').textContent = 'IQD ' + simBal.toLocaleString();
+  if (simBal < 5000) {
+    document.getElementById('wd-btn').className = 'wd-btn wd-locked';
+    document.getElementById('w-goal').textContent = lang==='ku'?'پێویستە ٥،٠٠٠ دینار بۆ دانەبەزاندن':lang==='ar'?'تحتاج ٥,٠٠٠ دينار للسحب':'Need IQD 5,000 to withdraw';
+  }
+}
+
+function showCert() {
+  cur = 8; showS(8); updateNav();
+  document.getElementById('csv').textContent = score+'/5';
+  document.getElementById('cdv').textContent = new Date().toLocaleDateString('en',{month:'short',year:'numeric'});
+  document.getElementById('civ').textContent = 'R-'+Math.floor(1000+Math.random()*9000);
+}
+</script>
+</body>
+</html>
